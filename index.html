@@ -197,7 +197,7 @@ body.calm .flake, body.calm .wave { animation-play-state: paused; }
   height: 100%;
   padding: 2px 22px 24px;
 }
-.screen.active { display: flex; animation: screen-in .45s ease both; }
+.screen.active { display: flex; animation: screen-in .45s ease backwards; } /* backwards, не both: иначе после анимации остаётся transform и ломает position: fixed у кнопки «Дальше» */
 @keyframes screen-in { from { opacity: 0; transform: translateY(14px); } }
 
 h1 {
@@ -765,6 +765,9 @@ h1 {
   .page { height: auto; min-height: 100vh; }
   .game { height: auto; min-height: calc(100vh - 32px); }
   .screen { height: auto; }
+  /* при авто-высоте экрана иллюстрация факта не должна схлопываться */
+  .fact-view { flex: 0 0 auto; }
+  .fact-media { flex: 0 0 auto; width: min(100%, 720px); margin: 0 auto; aspect-ratio: 16 / 10; }
 }
 @media (max-width: 900px) {
   .start-grid, .final-grid { grid-template-columns: 1fr; max-height: none; }
@@ -782,6 +785,8 @@ h1 {
 
 /* ================= Телефон ================= */
 @media (hover: none) {
+  /* на сенсорном экране «Дальше» получает фокус программно — рамка фокуса там не нужна */
+  .btn:focus-visible { outline: none; }
   .answer:hover:not(:disabled) { transform: none; box-shadow: none; border-color: #e8d6b4; }
   .mem-card:hover:not(.open):not(.matched) .mem-back { transform: none; }
   .trash:hover::before { opacity: 0; }
